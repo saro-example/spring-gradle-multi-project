@@ -1,4 +1,4 @@
 rootProject.name = 'gradle-multi-root'
-//include 'gm-core'
-//include 'gm-admin'
-//include 'gm-common'
+include 'common-project'
+include 'admin-web-project'
+include 'front-web-project'

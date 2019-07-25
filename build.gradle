@@ -1,46 +1,36 @@
-buildscript {
-	ext {
-		springBootVersion = '2.1.6.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-	}
+plugins {
+	id 'org.springframework.boot' version '2.1.6.RELEASE'
+	id 'java'
 }
 
-subprojects {
-	apply plugin: "org.springframework.boot"
+group = 'gradle-multi'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '12'
 
-	sourceCompatibility = 1.8
-	compileJava.options.encoding = "UTF-8"
-	
+subprojects {
+
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
 	repositories {
 		mavenCentral()
 	}
-	
-//	task initSourceFolders {
-//	    sourceSets*.java.srcDirs*.each {
-//	        if( !it.exists() ) {
-//	            it.mkdirs()
-//	        }
-//	    }
-//
-//	    sourceSets*.resources.srcDirs*.each {
-//	        if( !it.exists() ) {
-//	            it.mkdirs()
-//	        }
-//	    }
-//	}
-	
-	dependencies {
-		compile "me.saro:commons:4.0.3"
 
-		compileOnly "org.projectlombok:lombok"
-		testCompile "org.springframework.boot:spring-boot-starter-test"
+	jar {
+		enabled = true
 	}
-	
+
+	dependencies {
+		implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+		// lombok
+		compileOnly 'org.projectlombok:lombok'
+		testCompileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		testAnnotationProcessor 'org.projectlombok:lombok'
+	}
+
 	def env = project.hasProperty('env') ? project.getProperty('env') : 'local'
 	sourceSets {
 		main {
@@ -52,8 +42,25 @@ subprojects {
 	}
 }
 
-project(':gm-web') {
-    dependencies {
-        compile project(':gm-core')
-    }
+project(':common-project') {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+}
+
+project(':admin-web-project') {
+	dependencies {
+		implementation project(':common-project')
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+	}
+}
+
+project(':front-web-project') {
+
+	dependencies {
+		implementation project(':common-project')
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		testCompile "org.springframework.boot:spring-boot-starter-test"
+	}
 }
