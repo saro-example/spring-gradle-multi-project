@@ -1,0 +1,9 @@
+server.port: 8001
+
+spring.jpa.show-sql: true
+spring.jpa.hibernate.ddl-auto: update
+spring.jpa.generate-ddl: true
+
+#logging.level.org.hibernate.SQL: INFO
+#logging.level.org.hibernate: INFO
+#logging.level.org.hibernate.type: INFO

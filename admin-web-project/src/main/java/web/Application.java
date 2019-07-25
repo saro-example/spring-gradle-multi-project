@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 
 @SpringBootApplication
-@ComponentScan({"web"})
+@ComponentScan({"web", "web.*"})
 public class Application {
 
     public static void main(String[] args) {
